@@ -21,6 +21,7 @@ include(FetchContent)
 set(GRPC_VERSION 1.49.1)
 set(NLOHMANN_JSON_VERSION 3.11.3)
 set(GOOGLETEST_VERSION 1.12.1)
+set(BROTLI_VERSION 1.1.0) 
 Set(FETCHCONTENT_QUIET FALSE)
 
 # grpc
@@ -50,6 +51,14 @@ FetchContent_Declare(
     GIT_PROGRESS      TRUE
 )
 
+# brotli
+FetchContent_Declare(
+    brotli
+    GIT_REPOSITORY    https://github.com/google/brotli.git
+    GIT_TAG           v${BROTLI_VERSION}
+    GIT_SHALLOW       TRUE
+    GIT_PROGRESS      TRUE
+)
 
 # grpc
 if ("${MILVUS_WITH_GRPC}" STREQUAL "package")
@@ -86,5 +95,15 @@ else ()
     if (NOT nlohmann_json_POPULATED)
         FetchContent_Populate(nlohmann_json)
         add_subdirectory(${nlohmann_json_SOURCE_DIR} ${nlohmann_json_BINARY_DIR} EXCLUDE_FROM_ALL)
+    endif ()
+endif ()
+
+# brotli
+if ("${MILVUS_WITH_BROTLI}" STREQUAL "package")
+    find_package(Brotli REQUIRED)
+else ()
+    if (NOT brotli_POPULATED)
+        FetchContent_Populate(brotli)
+        add_subdirectory(${brotli_SOURCE_DIR} ${brotli_BINARY_DIR} EXCLUDE_FROM_ALL)
     endif ()
 endif ()

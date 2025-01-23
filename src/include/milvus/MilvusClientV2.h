@@ -17,8 +17,10 @@
 #pragma once
 
 #include <memory>
+#include <nlohmann/json.hpp>
 
 #include "Status.h"
+#include "httplib.h"
 #include "types/AliasDesc.h"
 #include "types/CalcDistanceArguments.h"
 #include "types/CollectionDesc.h"
@@ -51,6 +53,8 @@
 #include "types/SearchResults.h"
 #include "types/SegmentInfo.h"
 #include "types/UserResult.h"
+
+using json = nlohmann::json;
 
 /**
  *  @brief namespace milvus
@@ -718,6 +722,19 @@ class MilvusClientV2 {
      */
     virtual Status
     ListCredUsers(std::vector<std::string>& names) = 0;
+
+    virtual json
+    CreateImportJobs(const std::string& collection_name, const std::vector<std::string>& files,
+                     const std::string& db_name = "default", const std::string& api_key = "",
+                     const std::string& partition_name = "", const json& options = json{}) = 0;
+
+    virtual json
+    ListImportJobs(const std::string& collection_name, const std::string& db_name = "default",
+                   const std::string& api_key = "") = 0;
+
+    virtual json
+    GetImportJobProgress(const std::string& job_id, const std::string& db_name = "default",
+                         const std::string& api_key = "") = 0;
 };
 
 }  // namespace milvus
