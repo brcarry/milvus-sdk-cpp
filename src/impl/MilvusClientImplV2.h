@@ -324,17 +324,6 @@ class MilvusClientImplV2 : public MilvusClientV2 {
     Status
     ListCredUsers(std::vector<std::string>& users) final;
 
-    json
-    CreateImportJobs(const std::string& collection_name, const std::vector<std::string>& files,
-                     const std::string& db_name, const std::string& api_key, const std::string& partition_name,
-                     const json& options) final;
-
-    json
-    ListImportJobs(const std::string& collection_name, const std::string& db_name, const std::string& api_key) final;
-
-    json
-    GetImportJobProgress(const std::string& job_id, const std::string& db_name, const std::string& api_key) final;
-
  private:
     using GrpcOpts = MilvusConnection::GrpcContextOptions;
 
